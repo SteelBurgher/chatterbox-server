@@ -1,0 +1,208 @@
+body {
+    background: #eee;
+    text-align: center;
+    padding: 0 25px;
+    font-family: Helvetica, arial, sans-serif;
+}
+
+#main {
+    width: 500px;
+    margin: auto;
+    text-align: left;
+    background: white;
+    padding: 50px 60px;
+    border: solid #ddd;
+    border-width: 0 1px 1px 1px;
+    position: relative;
+}
+
+#main h1 {
+    margin-top: 0;
+    font-size: 35px;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+#main h1 span.left {
+    color:#73ADDE;
+}
+
+#main h1 span.right {
+    font-style:italic;
+}
+
+#main ul {
+    padding-left: 20px;
+}
+
+#main .error {
+    border: 1px solid red;
+    background: #FDEFF0;
+    padding: 20px;
+}
+
+#main .success {
+    margin-top: 25px;
+}
+
+#main .success code {
+    font-size: 12px;
+    color: green;
+    line-height: 13px;
+}
+
+#main .title-container {
+  width: 100%;
+  height: 60px;
+}
+
+#main .title {
+  position: relative;
+  float: left;
+  height: 100%;
+}
+
+#main .menu {
+  position: relative;
+  float: right;
+  width: 200px;
+  height: 100%;
+}
+
+#roomSelect {
+  margin: 10px 0 0 0;
+  width: 180px;
+}
+
+form {
+    padding: 20px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    background-color: #B1D3F6;
+    border-radius: 5px;
+}
+
+form input[type=text] {
+    margin-right: 10px;
+    width: 70%;
+    font-size: 12px;
+    padding: 5px;
+}
+
+.sendButton {
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chat {
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: #eee;
+  }
+
+.chat .username {
+    font-weight: 800;
+    margin: 0 30px 0 0;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.chat .username.friend {
+    background-color: #73ADDE;
+}
+
+.chat .messageBody {
+    font-weight: 200;
+    color: #444;
+    padding: 5px;
+}
+
+.chat .messageBody.friend {
+    font-weight: 400;
+    color: #59707F;
+}
+
+.chat .createdAt {
+    font-style: italic;
+    color: #5A6D7F;
+    font-size: 0.8em;
+}
+
+.chat:hover {
+    background-color: #ddd;
+}
+
+.spinner {
+    float: right;
+    height: 46px;
+    margin-bottom: 5px;
+}
+
+.spinner img {
+    padding: 10px;
+}
+
+button
+{
+    display: inline-block;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 5px 5px;
+    margin: 0;
+    color: #fff;
+    background-color: #3b8ec2;
+    background: -webkit-linear-gradient(#3b8ec2, #61A0C2);
+    background: linear-gradient(#3b8ec2, #61A0C2);
+    border: 0 none;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px #888;
+    cursor: pointer;
+}
+
+select {
+    font-size: 100%; /* 1 */
+    margin: 0; /* 2 */
+    vertical-align: baseline; /* 3 */
+    *vertical-align: middle; /* 3 */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
+
+.styled-select {
+   background: url("../images/15xvbd5.png") no-repeat 96% 0;
+   color: #fff;
+   padding: 5px;
+   height: 29px;
+   overflow: hidden;
+   width: 240px;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+   background-color: #3b8ec2;
+}
+
+.styled-select select {
+   background: transparent;
+   border: none;
+   font-size: 14px;
+   height: 29px;
+   padding: 5px; /* If you add too much padding here, the options won't show in IE */
+   width: 268px;
+}
+
+.styled-select.slate {
+   background: url(http://i62.tinypic.com/2e3ybe1.jpg) no-repeat right center;
+   height: 34px;
+   width: 240px;
+}
+
+.styled-select.slate select {
+   border: 1px solid #ccc;
+   font-size: 16px;
+   height: 34px;
+   width: 268px;
+}

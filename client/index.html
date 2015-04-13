@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>chatterbox</title>
+    <link rel="stylesheet" href="styles/styles.css">
+
+    <!-- dependencies -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/underscore/underscore-min.js"></script>
+    <!-- your scripts -->
+    <script src="env/config.js"></script>
+    <script src="scripts/app.js"></script>
+  </head>
+  <body>
+    <div id="main">
+      <div class="title-container">
+        <div class="title"><h1><span class='left'>chatter</span><span class='right'>box</span></h1></div>
+        <div class="menu"><select id="roomSelect" class="styled-select">
+          <option>All rooms</option>
+          <option value = "create">Create a new room...</option>
+        </select></div>
+      </div>
+      <!-- Your HTML goes here! -->
+      <form id="send">
+        <input type="text" class="userMessage">
+        <button type="submit" class="submit">Send</button>
+      </form>
+      <div id="chats"></div>
+    </div>
+  </body>
+</html>
