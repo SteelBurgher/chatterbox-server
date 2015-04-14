@@ -1,8 +1,1 @@
-#*
-*.o
-*.pyc
-*~
-extern/
-node_modules/
-tmp
-vendor/
+.git/COMMIT_EDITMSG
