@@ -11,7 +11,8 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
-
+var url = require("url");
+var _ = require("underscore");
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
   //
@@ -29,9 +30,15 @@ var requestHandler = function(request, response) {
   // console.logs in your code.
   console.log("Serving request type " + request.method + " for url " + request.url);
 
-  
+    
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
+
+  if(request.method === "OPTIONS"){
+    var statusCode = 200;
+    response.writeHead(statusCode, headers);
+    response.end();
+  }
 
   if(request.url.split("/")[1] !== "classes") {
     var statusCode = 404;
@@ -44,9 +51,15 @@ var requestHandler = function(request, response) {
 
     // The outgoing status.
     var statusCode = 200;
-    
+    var resultMessages = messages;
     headers['Content-Type'] = "application/json";
-
+    var queryData = url.parse(request.url, true).query;
+    console.log(queryData);
+    if(queryData["where[roomname]"] !== undefined) {
+      resultMessages = _.filter(messages, function(message) {
+        return message.roomname === queryData["where[roomname]"];
+      });
+    }
     response.writeHead(statusCode, headers);
 
     /* var messageData; 
@@ -54,18 +67,20 @@ var requestHandler = function(request, response) {
       messageData = JSON.parse(message);
     }); */
 
-    response.write(JSON.stringify({results: messages}));
-    console.log(JSON.stringify({results: messages}));
-    response.end();
+    
+  
+    response.end(JSON.stringify({results: resultMessages}));
     
   } else if (request.method ==="POST") {
     var statusCode = 201;
 
-    headers['Content-Type'] = "application/json";
+    headers['Content-Type'] = "text";
     response.writeHead(statusCode, headers);
     
     request.on('data', function(message) {
-      messages.push(JSON.parse(message));
+      var message = JSON.parse(message);
+      message.createdAt = new Date(); 
+      messages.push(message);
     });
 
     request.on('end', function() {
@@ -86,7 +101,7 @@ var requestHandler = function(request, response) {
 //   res.end(postHTML);
 // });
 var messages = [];
-module.exports = requestHandler;
+module.exports.requestHandler = requestHandler;
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
 // This code allows this server to talk to websites that

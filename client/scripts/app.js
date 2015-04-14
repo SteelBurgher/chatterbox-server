@@ -3,7 +3,7 @@ $(document).ready(function() {
 
 window.app = {};
 
-window.app.server = 'https://api.parse.com/1/classes/chatterbox';
+window.app.server = 'http://127.0.0.1:3000/classes/messages';
 window.app.friendsList = [];
 window.app.context = {
   currentRoom: "",
@@ -14,20 +14,25 @@ window.app.context = {
 };
 
 window.app.init = function () {
+  $('#roomSelect').children(":first").data("name", '');
+
   $.ajax({
 
     url: window.app.server,
     type: 'GET',
-    data: {
-      order: '-createdAt'
-    },
+    // data: {
+    //   order: '-createdAt'
+    // },
     contentType: 'application/json',
 
     success: function(data) {
       var messages = data.results;
-      window.lastDate = new Date(messages[0].createdAt).getTime();
-
-      for (var i = messages.length-1; i >= 0; i--) {
+      if(messages.length === 0 ) {
+        window.app.lastDate = 0;
+      } else {
+        window.app.lastDate = new Date(messages[0].createdAt).getTime();
+      }
+      for (var i = 0; i < messages.length; i++) {
         window.app.addMessage(messages[i]);
       };
 
@@ -37,10 +42,7 @@ window.app.init = function () {
 }
 
 window.app.fetch = function(roomName, friend) {
-  var data = {
-    order: '-createdAt'
-  };
-
+  var data = {};
   if (roomName || friend) {
     data.where = {};
   }
@@ -60,18 +62,23 @@ window.app.fetch = function(roomName, friend) {
 
   success: function(data) {
     var messages = data.results;
+    console.log(data.results);
 
     if (roomName || friend) {
       window.app.clearMessages();
     }
 
-    for (var i = messages.length-1; i >= 0; i--) {
+    for (var i = 0; i < messages.length; i++) {
       var messageDate = new Date(messages[i].createdAt).getTime();
-      if (messageDate > window.lastDate) {
+      if (messageDate > window.app.lastDate) {
         window.app.addMessage(messages[i]);
       }
     }
-    window.lastDate = new Date(messages[0].createdAt).getTime();
+    if(messages.length !== 0) {
+      window.app.lastDate = new Date(messages[messages.length - 1].createdAt).getTime();
+    } else {
+      window.app.lastDate = 0;
+    }
   }
 });
 };
@@ -90,14 +97,14 @@ window.app.addMessage = function(messageData) {
   $('#chats').prepend(message);
   $('#chats').find(':hidden').fadeIn(800);
   $('#chats').find(">:first-child").on('click', function () { window.app.addFriend(messageData.username); });
-  if (!(messageData.roomname in window.app.context.roomList)) {
+  if (!(messageData.roomname in window.app.context.roomList) && messageData.roomname) {
     window.app.addRoom(messageData.roomname);
   }
 };
 
 window.app.clearMessages = function(){
   $('#chats').empty();
-  window.lastDate = 0;
+  window.app.lastDate = 0;
 };
 
 window.app.addRoom = function (roomName) {
@@ -110,7 +117,7 @@ window.app.addFriend = function (username) {
   window.app.friendsList.push(username);
   window.app.clearMessages();
   window.app.fetch(window.app.context.currentRoom);
-}
+};
 
 window.app.send = function(message) {
   $.ajax({
@@ -120,6 +127,9 @@ window.app.send = function(message) {
     contentType: 'application/json',
     success: function() {
       window.app.fetch(message.roomname);
+    }, 
+    error: function(e, type) {
+      console.log(type);
     }
   });
 };
@@ -132,11 +142,12 @@ window.app.handleSubmit = function() {
       text: text,
       roomname: window.app.context.currentRoom
     });
+  $('.userMessage').val('');
 };
 
 window.app.init();
 
-setInterval(window.app.fetch, 5000);
+//setInterval(window.app.fetch, 5000);
 
 $('#send').submit(function (event) {
   event.preventDefault();
@@ -145,14 +156,14 @@ $('#send').submit(function (event) {
 
 $('#roomSelect').on('change', function () {
   if ($(this).find(':selected').text() === 'Create a new room...') {
-    var roomname = prompt("Enter new room name:");
-    window.app.addRoom(roomname);
-    $(this).val(roomname);
+    window.app.context.currentRoom = prompt("Enter new room name:");
+    window.app.addRoom(window.app.context.currentRoom);
+    $(this).val(window.app.context.currentRoom);
   } else {
-    var roomname = $(this).find(':selected').data("name");
+    window.app.context.currentRoom = $(this).find(':selected').data("name");
   }
   window.app.clearMessages();
-  window.app.fetch(roomname);
+  window.app.fetch(window.app.context.currentRoom);
 });
 
 });
